@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTagPlaylistTable extends Migration
+class AddIntroToVideosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateTagPlaylistTable extends Migration
      */
     public function up()
     {
-        Schema::create('playlist_tag', function (Blueprint $table) {
-            $table->foreignId('playlist_id');
-            $table->foreignId('tag_id');
-            $table->primary(['tag_id', 'playlist_id']);
+        Schema::table('videos', function (Blueprint $table) {
+            $table->boolean('intro')->default(false)->after('runtime');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateTagPlaylistTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_playlist');
+        Schema::table('videos', function (Blueprint $table) {
+            $table->dropColumn('intro');
+        });
     }
 }
